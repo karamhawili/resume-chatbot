@@ -42,7 +42,7 @@ export default function ChatBox() {
       <div className={styles.messagesContainer}>
         {messages.length === 0 ? (
           <div className={styles.emptyState}>
-            Ask me anything about the resume! For example: &quot;What frameworks
+            Ask me anything about the resume! <br></br> &quot;What frameworks
             does Karam know?&quot;
           </div>
         ) : (
