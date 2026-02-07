@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import styles from "./ChatBox.module.css";
 
 interface Message {
@@ -12,25 +12,55 @@ export default function ChatBox() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const handleSend = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || isLoading) return;
 
     const userMessage: Message = { role: "user", content: input };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
 
-    // TODO: API call will go here in Phase 3
-    // For now, just a placeholder response
-    setTimeout(() => {
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: input }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to get response");
+      }
+
+      const data = await response.json();
+
       const assistantMessage: Message = {
         role: "assistant",
-        content: "Chat API will be connected in Phase 3!",
+        content: data.reply,
       };
+
       setMessages((prev) => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error("Chat error:", error);
+      const errorMessage: Message = {
+        role: "assistant",
+        content: "Sorry, I encountered an error. Please try again.",
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
       setIsLoading(false);
-    }, 500);
+    }
   };
 
   return (
@@ -42,26 +72,34 @@ export default function ChatBox() {
       <div className={styles.messagesContainer}>
         {messages.length === 0 ? (
           <div className={styles.emptyState}>
-            Ask me anything about the resume! <br></br> &quot;What frameworks
-            does Karam know?&quot;
+            Ask me anything about the resume! For example: &quot;What frameworks
+            does Karam know?&quot; or &quot;Tell me about his experience at
+            ITXI&quot;
           </div>
         ) : (
-          messages.map((message, index) => (
-            <div
-              key={index}
-              className={`${styles.message} ${
-                message.role === "user"
-                  ? styles.userMessage
-                  : styles.assistantMessage
-              }`}
-            >
-              {message.content}
-            </div>
-          ))
+          <>
+            {messages.map((message, index) => (
+              <div
+                key={index}
+                className={`${styles.message} ${
+                  message.role === "user"
+                    ? styles.userMessage
+                    : styles.assistantMessage
+                }`}
+              >
+                {message.content}
+              </div>
+            ))}
+            <div ref={messagesEndRef} />
+          </>
         )}
         {isLoading && (
           <div className={`${styles.message} ${styles.assistantMessage}`}>
-            Thinking...
+            <div className={styles.loadingDots}>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
           </div>
         )}
       </div>
@@ -81,7 +119,7 @@ export default function ChatBox() {
           disabled={isLoading || !input.trim()}
           className={styles.sendButton}
         >
-          Send
+          {isLoading ? "Sending..." : "Send"}
         </button>
       </div>
     </div>
