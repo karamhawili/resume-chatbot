@@ -164,14 +164,21 @@
 }
 
 .sendButton {
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem;
   background-color: #2563eb;
   color: white;
   border: none;
   border-radius: 6px;
-  font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+}
+
+.sendButton svg {
+  fill: currentColor;
 }
 
 .sendButton:hover:not(:disabled) {
@@ -181,6 +188,10 @@
 .sendButton:disabled {
   background-color: #9ca3af;
   cursor: not-allowed;
+}
+
+.sendButton svg {
+  display: block;
 }
 
 /* Loading dots animation */
