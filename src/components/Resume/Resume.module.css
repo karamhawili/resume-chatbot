@@ -1,0 +1,149 @@
+.resume {
+  padding: 2rem;
+}
+
+.header {
+  text-align: center;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+}
+
+.name {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: #6b7280;
+  margin: 0 0 1rem 0;
+}
+
+.contact {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.contact span {
+  white-space: nowrap;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+}
+
+.experienceItem {
+  margin-bottom: 2rem;
+}
+
+.experienceHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.role {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.duration {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.company {
+  color: #4b5563;
+  margin: 0.25rem 0;
+  font-weight: 500;
+}
+
+.stack {
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin: 0.25rem 0 0.75rem 0;
+  font-style: italic;
+}
+
+.achievements {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #374151;
+}
+
+.achievements li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.skillsGrid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.skillCategory h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+}
+
+.skillCategory p {
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.educationItem h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+}
+
+.educationItem p {
+  color: #4b5563;
+  margin: 0.25rem 0;
+}
+
+@media (max-width: 968px) {
+  .resume {
+    padding: 1.5rem;
+  }
+
+  .name {
+    font-size: 2rem;
+  }
+
+  .contact {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .experienceHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
