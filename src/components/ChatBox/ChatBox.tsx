@@ -18,6 +18,37 @@ export default function ChatBox({ onViewResume }: ChatBoxProps) {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const handleChipClick = (question: string) => {
+    setInput(question);
+    setMessages((prev) => [...prev, { role: "user", content: question }]);
+    setIsLoading(true);
+
+    fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: question }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", content: data.reply },
+        ]);
+        setInput("");
+      })
+      .catch((error) => {
+        console.error("Chat error:", error);
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "assistant",
+            content: "Sorry, I encountered an error. Please try again.",
+          },
+        ]);
+      })
+      .finally(() => setIsLoading(false));
+  };
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -100,30 +131,29 @@ export default function ChatBox({ onViewResume }: ChatBoxProps) {
             <div className={styles.chipContainer}>
               <button
                 className={styles.chip}
-                onClick={() => {
-                  setInput("What frameworks does Karam know?");
-                  // Auto-send after a tiny delay so user sees it
-                  setTimeout(() => {
-                    const event = new KeyboardEvent("keypress", {
-                      key: "Enter",
-                    });
-                    document
-                      .querySelector(`.${styles.input}`)
-                      ?.dispatchEvent(event);
-                  }, 100);
-                }}
+                onClick={() =>
+                  handleChipClick("What frameworks does Karam know?")
+                }
               >
                 What frameworks does Karam know?
               </button>
               <button
                 className={styles.chip}
-                onClick={() => setInput("What are his UI/UX skills?")}
+                onClick={() =>
+                  handleChipClick("Tell me about his experience at ITXI")
+                }
+              >
+                Tell me about his experience at ITXI
+              </button>
+              <button
+                className={styles.chip}
+                onClick={() => handleChipClick("What are his UI/UX skills?")}
               >
                 What are his UI/UX skills?
               </button>
               <button
                 className={styles.chip}
-                onClick={() => setInput("What projects has he built?")}
+                onClick={() => handleChipClick("What projects has he built?")}
               >
                 What projects has he built?
               </button>
