@@ -1,7 +1,7 @@
 .container {
   display: grid;
   grid-template-columns: 1fr 500px;
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
 }
 
@@ -22,7 +22,7 @@
 @media (max-width: 968px) {
   .container {
     grid-template-columns: 1fr;
-    height: 100vh;
+    height: 100dvh;
   }
 
   .resumePanel {
@@ -31,7 +31,7 @@
 
   .chatPanel {
     border-left: none;
-    height: 100vh;
+    height: 100dvh;
   }
 
   /* Resume overlay */
