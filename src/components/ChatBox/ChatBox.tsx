@@ -8,7 +8,11 @@ interface Message {
   content: string;
 }
 
-export default function ChatBox() {
+interface ChatBoxProps {
+  onViewResume?: () => void;
+}
+
+export default function ChatBox({ onViewResume }: ChatBoxProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -66,15 +70,64 @@ export default function ChatBox() {
   return (
     <div className={styles.chatContainer}>
       <div className={styles.chatHeader}>
-        <h3>Ask me about Karam&apos;s resume</h3>
+        <div className={styles.headerLeft}>
+          <svg
+            className={styles.messageIcon}
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <h3>Chat Assistant</h3>
+        </div>
+        {onViewResume && (
+          <button className={styles.mobileViewResumeBtn} onClick={onViewResume}>
+            View Resume
+          </button>
+        )}
       </div>
 
       <div className={styles.messagesContainer}>
         {messages.length === 0 ? (
           <div className={styles.emptyState}>
-            Ask me anything about the resume! For example: &quot;What frameworks
-            does Karam know?&quot; or &quot;Tell me about his experience at
-            ITXI&quot;
+            <p className={styles.emptyText}>
+              Ask me anything about the resume!
+            </p>
+            <div className={styles.chipContainer}>
+              <button
+                className={styles.chip}
+                onClick={() => {
+                  setInput("What frameworks does Karam know?");
+                  // Auto-send after a tiny delay so user sees it
+                  setTimeout(() => {
+                    const event = new KeyboardEvent("keypress", {
+                      key: "Enter",
+                    });
+                    document
+                      .querySelector(`.${styles.input}`)
+                      ?.dispatchEvent(event);
+                  }, 100);
+                }}
+              >
+                What frameworks does Karam know?
+              </button>
+              <button
+                className={styles.chip}
+                onClick={() => setInput("What are his UI/UX skills?")}
+              >
+                What are his UI/UX skills?
+              </button>
+              <button
+                className={styles.chip}
+                onClick={() => setInput("What projects has he built?")}
+              >
+                What projects has he built?
+              </button>
+            </div>
           </div>
         ) : (
           <>
