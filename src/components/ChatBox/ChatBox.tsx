@@ -18,6 +18,15 @@ export default function ChatBox({ onViewResume }: ChatBoxProps) {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleInputFocus = () => {
+    // Small delay to let keyboard appear
+    setTimeout(() => {
+      inputRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 300);
+  };
+
   const handleChipClick = (question: string) => {
     setInput(question);
     setMessages((prev) => [...prev, { role: "user", content: question }]);
@@ -189,11 +198,13 @@ export default function ChatBox({ onViewResume }: ChatBoxProps) {
 
       <div className={styles.inputContainer}>
         <input
+          ref={inputRef}
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => e.key === "Enter" && handleSend()}
-          placeholder="Ask a question about the resume..."
+          onFocus={handleInputFocus}
+          placeholder="Ask a question..."
           className={styles.input}
           disabled={isLoading}
         />
