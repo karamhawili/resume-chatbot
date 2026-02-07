@@ -3,7 +3,7 @@
 A Next.js digital resume site with an AI-powered chat assistant that answers questions about the resume.
 
 ## Live Demo
-[Add link after deployment]
+https://resume-chatbot-ecru.vercel.app/
 
 ## Features
 - Professional resume display
